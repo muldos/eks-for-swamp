@@ -1,8 +1,9 @@
 // lib/my-eks-blueprints-stack.ts
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { aws_certificatemanager as acm } from "aws-cdk-lib";
+import { aws_route53 as route53 } from "aws-cdk-lib";
 import * as blueprints from '@aws-quickstart/eks-blueprints';
-
 export default class ClusterConstruct extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id);
@@ -26,6 +27,7 @@ export default class ClusterConstruct extends Construct {
     .addOns(...addOns)
     .teams()
     .build(scope, id+'-davidro-stack');
+
 
     cdk.Tags.of(blueprint).add("jfrog:owner", 'davidro');
     cdk.Tags.of(blueprint).add("jfrog:team", "devopsacc");

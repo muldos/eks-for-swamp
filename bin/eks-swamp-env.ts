@@ -1,5 +1,6 @@
 // bin/my-eks-blueprints.ts
 import * as cdk from 'aws-cdk-lib';
+import CertificateStack from '../lib/acm-certificates-stack';
 import ClusterConstruct from '../lib/eks-swamp-env-stack';
 
 
@@ -9,3 +10,4 @@ const region = process.env.CDK_DEFAULT_REGION;
 const env = { account, region }
 
 new ClusterConstruct(app, 'cluster', { env });
+new CertificateStack(app, 'certificate4SwampEnv', { env });

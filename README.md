@@ -16,7 +16,7 @@ Update $HOME/.aws/credentials
 npm install
 export CDK_DEFAULT_ACCOUNT= ...
 export CDK_DEFAULT_REGION= ...
-cdk deploy 
+cdk deploy --all
 ```
 
 ## Accessing Argocd
