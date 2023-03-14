@@ -1,16 +1,34 @@
+// lib/my-eks-blueprints-stack.ts
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as blueprints from '@aws-quickstart/eks-blueprints';
 
-export class EksSwampEnvStack extends cdk.Stack {
+export default class ClusterConstruct extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+    super(scope, id);
 
-    // The code that defines your stack goes here
+    const account = props?.env?.account!;
+    const region = props?.env?.region!;
+    const addOns: Array<blueprints.ClusterAddOn> = [
+      new blueprints.addons.ArgoCDAddOn(),
+      new blueprints.addons.CalicoOperatorAddOn(),
+      new blueprints.addons.MetricsServerAddOn(),
+      new blueprints.addons.ClusterAutoScalerAddOn(),
+      new blueprints.addons.AwsLoadBalancerControllerAddOn(),
+      new blueprints.addons.VpcCniAddOn(),
+      new blueprints.addons.EbsCsiDriverAddOn(),
+      new blueprints.addons.CoreDnsAddOn(),
+      new blueprints.addons.KubeProxyAddOn()
+  ];
+    const blueprint = blueprints.EksBlueprint.builder()
+    .account(account)
+    .region(region)
+    .addOns(...addOns)
+    .teams()
+    .build(scope, id+'-davidro-stack');
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'EksSwampEnvQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    cdk.Tags.of(blueprint).add("jfrog:owner", 'davidro');
+    cdk.Tags.of(blueprint).add("jfrog:team", "devopsacc");
+  
   }
 }
