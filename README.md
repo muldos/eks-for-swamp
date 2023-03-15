@@ -22,13 +22,13 @@ cdk deploy --all
 ## Accessing Argocd
 
 ```
-kubectl port-forward svc/blueprints-addon-argocd-server -n argocd 8080:443
+kubectl port-forward svc/blueprints-addon-argocd-server -n argocd 8080:80
 ```
 
 Then get the password :
 
 ```
-kubectl get secrets/argocd-initial-admin-secret -n argocd --template={{.data.password}} | base64 -D
+kubectl get secrets/argocd-initial-admin-secret -n argocd --template={{.data.password}} | base64 -D;echo
 ```
 <b> Warning : Remove the '%' at the end </b>
 
