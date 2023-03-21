@@ -2,6 +2,8 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as blueprints from '@aws-quickstart/eks-blueprints';
+import { aws_ec2 as ec2 } from "aws-cdk-lib";
+import { aws_eks as eks } from "aws-cdk-lib";
 export default class ClusterConstruct extends Construct {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id);
@@ -25,15 +27,26 @@ export default class ClusterConstruct extends Construct {
       new blueprints.addons.CoreDnsAddOn(), // internal DNS
       new blueprints.addons.KubeProxyAddOn() // kubeproxy
   ];
-  
+  // allow to customize the cluster 
+  const clusterProps: blueprints.MngClusterProviderProps = {
+    minSize: 1,
+    maxSize: 6,
+    desiredSize: 2,
+    instanceTypes: [new ec2.InstanceType('m5.xlarge')],
+    amiType: eks.NodegroupAmiType.AL2_X86_64,
+    nodeGroupCapacityType: eks.CapacityType.ON_DEMAND,
+    version: eks.KubernetesVersion.V1_24
+  }
+  const clusterProvider = new blueprints.MngClusterProvider(clusterProps);
+
     const blueprint = blueprints.EksBlueprint.builder()
     .account(account)
+    .clusterProvider(clusterProvider)
     .region(region)
     .resourceProvider(blueprints.GlobalResources.HostedZone, new blueprints.ImportHostedZoneProvider(hostedZoneID, hostedZoneDomain))
     .addOns(...addOns)
     .teams()
     .build(scope, id+'-davidro-stack');
-
 
     cdk.Tags.of(blueprint).add("jfrog:owner", 'davidro');
     cdk.Tags.of(blueprint).add("jfrog:team", "devopsacc");
