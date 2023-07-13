@@ -6,23 +6,22 @@ import { aws_route53 as route53 } from "aws-cdk-lib";
 export default class CertificateStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
-        const devopsaccTeamZone = route53.HostedZone.fromLookup(this, 'Zone', {domainName : 'devopsacc.team'});
-    
+        const hostedZoneDomain = this.node.tryGetContext('hostedZoneDomain');
+
+        const devopsaccTeamZone = route53.HostedZone.fromLookup(this, 'Zone', {domainName : hostedZoneDomain});
+
     
         const cert = new acm.Certificate(this, 'Certificate', {
-          domainName: 'dro-swamp1.devopsacc.team',
-          subjectAlternativeNames: ['dro-swamp2.devopsacc.team',
-           'dro-swamp2.devopsacc.team',
-           'dro-swamp3.devopsacc.team',
-           'dro-swamp4.devopsacc.team',
-           'dro-swamp5.devopsacc.team',
-           'dro-swamp6.devopsacc.team',
-           'dro-swamp7.devopsacc.team',
-           'dro-swamp8.devopsacc.team'],
+          domainName: `demo-env.${hostedZoneDomain}`,
+          subjectAlternativeNames: [`*.demo-env.${hostedZoneDomain}`
+        ],
           validation: acm.CertificateValidation.fromDns(devopsaccTeamZone),
         });
-        cdk.Tags.of(cert).add("jfrog:owner", 'davidro');
-        cdk.Tags.of(cert).add("jfrog:team", "devopsacc");
+        cdk.Tags.of(cert).add("Owner", 'davidro');
+        cdk.Tags.of(cert).add("Team", "DevAcc");  
+        cdk.Tags.of(cert).add("Purpose", "Demo");  
+        cdk.Tags.of(cert).add("Customer", "BNP Paribas");  
+        cdk.Tags.of(cert).add("Notes", "self hosted wildcard cert stack"); 
         new cdk.CfnOutput(this, 'Certificate ARN', { value: cert.certificateArn });
        
     }

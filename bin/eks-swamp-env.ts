@@ -10,4 +10,4 @@ const region = process.env.CDK_DEFAULT_REGION;
 const env = { account, region }
 
 new ClusterConstruct(app, 'cluster', { env });
-new CertificateStack(app, 'certificate4SwampEnv', { env });
+new CertificateStack(app, 'acmDemoEnv', { env });

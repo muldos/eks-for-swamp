@@ -3,6 +3,7 @@
 *.d.ts
 node_modules
 
+context-values.txt
 # CDK asset staging directory
 .cdk.staging
 cdk.out

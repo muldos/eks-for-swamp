@@ -16,7 +16,8 @@ Update $HOME/.aws/credentials
 npm install
 export CDK_DEFAULT_ACCOUNT= ...
 export CDK_DEFAULT_REGION= ...
-cdk deploy --all
+cdk context -c ownerPrefix=<yourPrefix> -c hostedZoneID=1234YOURID -c hostedZoneDomain='your-domain.com' -c clusterAdminRole='YourIAMRoleName'
+cdk deploy 
 ```
 
 ## Accessing Argocd
