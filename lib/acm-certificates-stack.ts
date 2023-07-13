@@ -20,7 +20,7 @@ export default class CertificateStack extends cdk.Stack {
         cdk.Tags.of(cert).add("Owner", 'davidro');
         cdk.Tags.of(cert).add("Team", "DevAcc");  
         cdk.Tags.of(cert).add("Purpose", "Demo");  
-        cdk.Tags.of(cert).add("Customer", "BNP Paribas");  
+        cdk.Tags.of(cert).add("Customer", "None");  
         cdk.Tags.of(cert).add("Notes", "self hosted wildcard cert stack"); 
         new cdk.CfnOutput(this, 'Certificate ARN', { value: cert.certificateArn });
        
