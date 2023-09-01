@@ -2,6 +2,8 @@
 !jest.config.js
 *.d.ts
 node_modules
+#ignore jf cli directory
+.jfrog
 
 context-values.txt
 # CDK asset staging directory
