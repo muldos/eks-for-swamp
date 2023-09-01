@@ -20,6 +20,10 @@ cdk context -c ownerPrefix=<yourPrefix> -c hostedZoneID=1234YOURID -c hostedZone
 cdk deploy 
 ```
 
+## Cluster Admin Role
+
+in your AWS confing you can add a profile linked to the role that you use for cluster admin
+
 ## Accessing Argocd
 
 ```
